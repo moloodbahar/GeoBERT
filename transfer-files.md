@@ -1,5 +1,8 @@
-How to download your files from a vm instance on google cloud on youe local machine:
+
+How to download your files from a vm instance on google cloud on youe local machine?
+
 with google cloud sdk:
+
 go to the instance
 read this link:
 https://cloud.google.com/compute/docs/instances/transfer-files
