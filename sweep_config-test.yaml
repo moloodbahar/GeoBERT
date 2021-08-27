@@ -1,0 +1,43 @@
+program: exBERT/Pretraining_wandb.py
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - '--strategy'
+  - 'exBERT'
+  - ${args}
+project: pretraining_exbert
+method: grid
+metric:
+  name: val_loss
+  goal: minimize
+parameters:
+  #
+  # parameters to be optimized over
+  learning_rate:
+    values: [1e-4, 5e-05]
+  batchsize:
+    values: [86 , 128]
+  pretrained_model_path:
+    value: 'exBERT/modeldict' 
+  datat_path:
+   value: 'exBERT/geology_petrology_corpus.pkl'
+  percentage:
+   value: 1
+  warmup:
+    value: -1
+  vocab:
+      value: 'exBERT/config_and_vocab/oilBERT/oilvocabdic.txt'
+  train_extension_only:
+      value: True
+  #
+  # fixed parameters
+  #
+  save_path: 
+    value: 'exBERT/oilBERToutputwandb' 
+  longest_sentence:
+    value: 128
+  epochs:
+    value: 1
+  sep:
+      value: 1

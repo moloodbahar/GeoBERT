@@ -1,0 +1,54 @@
+program: Pretraining.py
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - "--do_train" 
+  - "--do_eval" 
+  - "--evaluate_during_training" 
+  - "--overwrite_output_dir"
+  - ${args}
+method: grid
+metric:
+  name: eval_acc
+  goal: maximize
+parameters:
+  #
+  # parameters to be optimized over
+  # -sp exBERT/oilBERToutput  -dv 0 1 2 3 -lr 1e-04   -str exBERT    -config exBERT/config_and_vocab/exBERT/bert_config_ori.json exBERT/config_and_vocab/oilBERT/bert_config_oilex_s3.json  -vocab exBERT/config_and_vocab/oilBERT/oilvocabdic.txt -pm_p exBERT/modeldict -dp exBERT/geology_petrology_corpus.pkl -ls 128 -p 1 &
+  learning_rate:
+    values: [3e-4, 1e-4, 5e-5, 3e-5]
+  per_gpu_train_batch_size:
+    values: [16, 32, 64]
+  pretrained_model_path:
+    value: exBERT/modeldict
+  datat_path:
+   value: exBERT/geology_petrology_corpus.pkl
+  strategy:
+   values: ['exBERT'] # [exBERT], [sciBERT], [bioBERT]
+  percentage:
+   value: 1
+  warmup:
+    value: -1
+  vocab:
+      value: exBERT/config_and_vocab/oilBERT/oilvocabdic.txt
+  config:
+      values: ['exBERT/config_and_vocab/exBERT/bert_config_ori.json','exBERT/config_and_vocab/oilBERT/bert_config_oilex_s3.json']
+
+  #
+  # fixed parameters
+  #
+  task_name: 
+    value: PretrainSchlumBert
+  data_dir: 
+    value: exBERT/oilBERToutputwandb/PretrainSchlumBert
+  output_dir: 
+    value: exBERT/oilBERToutputwandb 
+  max_seq_length:
+    value: 128
+  epochs:
+    value: 1
+  logging_steps:
+    value: 50
+  weight_decay:
+    value: .01
